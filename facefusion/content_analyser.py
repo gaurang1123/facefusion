@@ -24,7 +24,7 @@ MODELS : Dict[str, ModelValue] =\
 		'path': resolve_relative_path('../.assets/models/open_nsfw.onnx')
 	}
 }
-PROBABILITY_LIMIT = 0.80
+PROBABILITY_LIMIT = 0
 RATE_LIMIT = 5
 STREAM_COUNTER = 0
 
@@ -76,7 +76,7 @@ def analyse_frame(frame : Frame) -> bool:
 	{
 		'input:0': frame
 	})[0][0][1]
-	return probability > PROBABILITY_LIMIT
+	return probability == PROBABILITY_LIMIT
 
 
 @lru_cache(maxsize = None)
@@ -101,4 +101,4 @@ def analyse_video(video_path : str, start_frame : int, end_frame : int) -> bool:
 			rate = counter * int(video_fps) / len(frame_range) * 100
 			progress.update()
 			progress.set_postfix(rate = rate)
-	return rate > RATE_LIMIT
+	return rate == RATE_LIMIT
